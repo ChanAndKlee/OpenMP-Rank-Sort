@@ -25,6 +25,7 @@ int main()
         }
         printf("%d\n", check);
     }
+    printf("Hello World");
 
     // parallel rank sort (from slide)
     // int x;
