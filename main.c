@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
     // If argument counter is not equal to 3, then display here
     if(argc != 3) {
         printf("./filename <arraySizeToSort> <number of threads>\n");
+        return 1;
     }
 
     int arraySize, numThreads;
