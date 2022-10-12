@@ -32,7 +32,6 @@ int main()
     int arr[arraySize]; // array to be sorted
     int sorted[arraySize];
     int linearlySorted[arraySize];
-    int rank[arraySize];
 
     printf("> It's loading, pls wait\n");
 
@@ -50,12 +49,6 @@ int main()
      * Sequential Rank Sort
      */
     gettimeofday(&start, NULL);
-
-    for (i = 0; i < arraySize; i++)
-    {
-        rank[i] = 0;
-    }
-
     for (i = 0; i < arraySize; i++)
     {
         int x = 0;
