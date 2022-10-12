@@ -58,18 +58,13 @@ int main()
 
     for (i = 0; i < arraySize; i++)
     {
+        int x = 0;
         for (j = 0; j < arraySize; j++)
         {
             if (arr[j] < arr[i] || (arr[j] == arr[i] && j < i))
-            {
-                rank[i]++;
-            }
+                x++;
         }
-    }
-
-    for (i = 0; i < arraySize; i++)
-    {
-        linearlySorted[rank[i]] = arr[i];
+        linearlySorted[x] = arr[i];
     }
 
     gettimeofday(&stop, NULL);
@@ -79,11 +74,6 @@ int main()
      */
     openmp_start = omp_get_wtime();
 
-    for (i = 0; i < arraySize; i++)
-    {
-        rank[i] = 0;
-    }
-
     omp_set_num_threads(numThreads);
 
     /*
@@ -92,18 +82,13 @@ int main()
     #pragma omp parallel for private(j)
     for (i = 0; i < arraySize; i++)
     {
+        int x = 0;
         for (j = 0; j < arraySize; j++)
         {
             if (arr[j] < arr[i] || (arr[j] == arr[i] && j < i))
-            {
-                rank[i]++;
-            }
+                x++;
         }
-    }
-
-    for (i = 0; i < arraySize; i++)
-    {
-        sorted[rank[i]] = arr[i];
+        sorted[x] = arr[i];
     }
 
     openmp_end = omp_get_wtime();
