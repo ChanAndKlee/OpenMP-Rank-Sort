@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <sys/time.h>
 
-#define arraySize 10
+#define arraySize 100
 #define numThreads 8
 
 int main()
@@ -78,8 +78,8 @@ int main()
         printf("unsorted : %d, Parallel sorted : %d, Sequential sorted : %d  \n", arr[i], sorted[i], linearlySorted[i]);
     }
 
-    printf("Time used in parallel rank sort using openmp : %.7f seconds \n", openmp_end - openmp_start);
-    printf("Time used in sequential rank sort : %.7f seconds \n ", (stop.tv_sec - start.tv_sec) + (stop.tv_usec - start.tv_usec) / 1000000.0f);
+    printf("Time used in parallel rank sort using openmp : %.5f seconds \n", openmp_end - openmp_start);
+    printf("Time used in sequential rank sort : %.5f seconds \n ", (stop.tv_sec - start.tv_sec) + (stop.tv_usec - start.tv_usec) / 1000000.0f);
 
     return 0;
 }

@@ -15,6 +15,7 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <math.h>
+#include <sys/time.h>
 
 #define arraySize 10000 // define an array size to be sorted (e.g., 10000(4) , 100000(5) , 1000000(6) or 1M)
 #define numThreads 8    // define number of threads (e.g., 1, 4, 8, 12, and 16)
@@ -23,7 +24,7 @@ int main()
 {
 
     double openmp_start, openmp_end;
-    time_t seq_start, seq_end;
+    struct timeval stop, start;
 
     int i, j;
     int int_max = 10000;    // define ranging from 0 - 9999
@@ -48,7 +49,7 @@ int main()
     /*
      * Sequential Rank Sort
      */
-    time(&seq_start);
+    gettimeofday(&start, NULL);
 
     for (i = 0; i < arraySize; i++)
     {
@@ -71,7 +72,7 @@ int main()
         linearlySorted[rank[i]] = arr[i];
     }
 
-    time(&seq_end);
+    gettimeofday(&stop, NULL);
 
     /*
      * Parallel Rank sort using OpenMP
@@ -113,8 +114,9 @@ int main()
     }
 
     printf(">> Time used in parallel rank sort using openmp : %f seconds\n", openmp_end - openmp_start);
-    printf(">> Time used in sequential rank sort : %f seconds\n", difftime(seq_end, seq_start));
-    printf(">> Time Difference between parallel vs sequential rank sort : %f\n", fabs(difftime(seq_end, seq_start) - (openmp_end - openmp_start)));
-
+    printf(">> Time used in sequential rank sort : %f seconds\n", (stop.tv_sec - start.tv_sec) + (stop.tv_usec - start.tv_usec) / 1000000.0f);
+    // Change this to print the Speed up
+    // printf(">> Time Difference between parallel vs sequential rank sort : %f\n", fabs(difftime(seq_end, seq_start) - (openmp_end - openmp_start)));
+    // 
     return 0;
 }
