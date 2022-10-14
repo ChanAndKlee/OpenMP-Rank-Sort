@@ -91,6 +91,6 @@ int main(int argc, char *argv[])
 
     printf(">> Time used in parallel rank sort using OpenMP : %f seconds\n", openmp_end - openmp_start);
     printf(">> Time used in sequential rank sort : %f seconds\n", (stop.tv_sec - start.tv_sec) + (stop.tv_usec - start.tv_usec) / 1000000.0f);
-    printf(">> Speed Up (sequential / parallel) : %f\n", (openmp_end - openmp_start) / ((stop.tv_sec - start.tv_sec) + (stop.tv_usec - start.tv_usec) / 1000000.0f) );
+    printf(">> Speed Up (sequential / parallel) : %f\n", (openmp_end - openmp_start) / ((stop.tv_sec - start.tv_sec) + (stop.tv_usec - start.tv_usec) / 1000000.0f));
     return 0;
 }
