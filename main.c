@@ -14,34 +14,47 @@
 #include <stdlib.h>
 #include <math.h>
 #include <sys/time.h>
+struct timeval stop, start;
+
+void sequentialRankSort(struct timeval timer, int *arr, int *sorted, int arraySize)
+{
+    gettimeofday(&start, NULL);
+    for (int i = 0; i < arraySize; i++)
+    {
+        int x = 0;
+        for (int j = 0; j < arraySize; j++)
+        {
+            if (arr[j] < arr[i] || (arr[j] == arr[i] && j < i))
+                x++;
+        }
+        sorted[x] = arr[i];
+    }
+    gettimeofday(&stop, NULL);
+    printf(">> Time used in sequential rank sort : %f seconds\n", (stop.tv_sec - start.tv_sec) + (stop.tv_usec - start.tv_usec) / 1000000.0f);
+}
 
 int main(int argc, char *argv[])
 {
     // If argument counter is not equal to 3, then display here
-    if(argc != 3) {
+    if (argc != 3)
+    {
         printf("./filename <arraySizeToSort> <number of threads>\n");
         return 1;
     }
 
     int arraySize, numThreads;
-    
+
     // Convert argv[1], argv[2] to integers using atoi() to do Integer conversion
     arraySize = atoi(argv[1]);
     numThreads = atoi(argv[2]);
 
     double openmp_start, openmp_end;
-    struct timeval stop, start;
 
     int i, j;
-    int int_max = 10000;    // define ranging from 0 - 9999
+    int int_max = 10000; // define ranging from 0 - 9999
 
-    int arr[arraySize];     // array to be sorted
-    int sorted[arraySize];
-    int linearlySorted[arraySize];
-
-    printf("> It's loading, pls wait\n");
-
-    srand(time(NULL));
+    int arr[1000000]; // array to be sorted
+    int sorted[1000000];
 
     // Random the number
     for (i = 0; i < arraySize; i++)
@@ -49,20 +62,22 @@ int main(int argc, char *argv[])
         arr[i] = rand() % int_max;
     }
 
-    // Sequential Rank Sort
-    gettimeofday(&start, NULL);
-    for (i = 0; i < arraySize; i++)
+    printf("> It's loading, pls wait\n");
+
+    // Sequential rank sort
+    if (numThreads == 1)
     {
-        int x = 0;
-        for (j = 0; j < arraySize; j++)
+        struct timeval timer;
+        sequentialRankSort(timer, arr, sorted, arraySize);
+        for (i = 0; i < arraySize; i++)
         {
-            if (arr[j] < arr[i] || (arr[j] == arr[i] && j < i))
-                x++;
+            printf("unsorted : %d, sorted : %d\n", arr[i], sorted[i]);
         }
-        linearlySorted[x] = arr[i];
+        printf(">> Time used in sequential rank sort : %f seconds\n", (stop.tv_sec - start.tv_sec) + (stop.tv_usec - start.tv_usec) / 1000000.0f);
+        return 0;
     }
 
-    gettimeofday(&stop, NULL);
+    srand(time(NULL));
 
     // Parallel Rank sort using OpenMP
     openmp_start = omp_get_wtime();
@@ -70,7 +85,7 @@ int main(int argc, char *argv[])
     omp_set_num_threads(numThreads);
 
     // Rank sort with OpenMP
-    #pragma omp parallel for private(j)
+#pragma omp parallel for private(j)
     for (i = 0; i < arraySize; i++)
     {
         int x = 0;
@@ -86,11 +101,9 @@ int main(int argc, char *argv[])
 
     for (i = 0; i < arraySize; i++)
     {
-        printf("unsorted : %d, Parallel sorted : %d, Sequential sorted : %d\n", arr[i], sorted[i], linearlySorted[i]);
+        printf("unsorted : %d, sorted : %d\n", arr[i], sorted[i]);
     }
 
     printf(">> Time used in parallel rank sort using OpenMP : %f seconds\n", openmp_end - openmp_start);
-    printf(">> Time used in sequential rank sort : %f seconds\n", (stop.tv_sec - start.tv_sec) + (stop.tv_usec - start.tv_usec) / 1000000.0f);
-    printf(">> Speed Up (sequential / parallel) : %f\n", (openmp_end - openmp_start) / ((stop.tv_sec - start.tv_sec) + (stop.tv_usec - start.tv_usec) / 1000000.0f));
     return 0;
 }
