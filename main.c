@@ -85,30 +85,31 @@ int main(int argc, char *argv[])
 
     omp_set_num_threads(numThreads);
 
-    if (threshold > 0) {
+    if (threshold > 0)
+    {
         omp_set_schedule(omp_sched_static, threshold);
     }
-    
-    // Rank sort with OpenMP
-    #pragma omp parallel for private(j)
+
+// Rank sort with OpenMP
+#pragma omp parallel for private(j)
     for (i = 0; i < arraySize; i++)
     {
         int x = 0;
-        printf("Thread %d is running number %d\n", omp_get_thread_num(), i);
+        // printf("Thread %d is running number %d\n", omp_get_thread_num(), i);
         for (j = 0; j < arraySize; j++)
         {
             if (arr[j] < arr[i] || (arr[j] == arr[i] && j < i))
-                x++;   
+                x++;
         }
         sorted[x] = arr[i];
     }
 
     openmp_end = omp_get_wtime();
 
-    // for (i = 0; i < arraySize; i++)
-    // {
-    //     printf("unsorted : %d, sorted : %d\n", arr[i], sorted[i]);
-    // }
+    for (i = 0; i < arraySize; i++)
+    {
+        printf("unsorted : %d, sorted : %d\n", arr[i], sorted[i]);
+    }
 
     printf(">> Time used in parallel rank sort using OpenMP : %f seconds\n", openmp_end - openmp_start);
     return 0;
