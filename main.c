@@ -36,17 +36,18 @@ void sequentialRankSort(struct timeval timer, int *arr, int *sorted, int arraySi
 int main(int argc, char *argv[])
 {
     // If argument counter is not equal to 3, then display here
-    if (argc != 3)
+    if (argc != 4)
     {
-        printf("./filename <arraySizeToSort> <number of threads>\n");
+        printf("./filename <arraySizeToSort> <number of threads> <threshold>\n");
         return 1;
     }
 
-    int arraySize, numThreads;
+    int arraySize, numThreads, threshold;
 
     // Convert argv[1], argv[2] to integers using atoi() to do Integer conversion
     arraySize = atoi(argv[1]);
     numThreads = atoi(argv[2]);
+    threshold = atoi(argv[3]);
 
     double openmp_start, openmp_end;
 
@@ -84,25 +85,30 @@ int main(int argc, char *argv[])
 
     omp_set_num_threads(numThreads);
 
+    if (threshold > 0) {
+        omp_set_schedule(omp_sched_static, threshold);
+    }
+    
     // Rank sort with OpenMP
-#pragma omp parallel for private(j)
+    #pragma omp parallel for private(j)
     for (i = 0; i < arraySize; i++)
     {
         int x = 0;
+        printf("Thread %d is running number %d\n", omp_get_thread_num(), i);
         for (j = 0; j < arraySize; j++)
         {
             if (arr[j] < arr[i] || (arr[j] == arr[i] && j < i))
-                x++;
+                x++;   
         }
         sorted[x] = arr[i];
     }
 
     openmp_end = omp_get_wtime();
 
-    for (i = 0; i < arraySize; i++)
-    {
-        printf("unsorted : %d, sorted : %d\n", arr[i], sorted[i]);
-    }
+    // for (i = 0; i < arraySize; i++)
+    // {
+    //     printf("unsorted : %d, sorted : %d\n", arr[i], sorted[i]);
+    // }
 
     printf(">> Time used in parallel rank sort using OpenMP : %f seconds\n", openmp_end - openmp_start);
     return 0;
