@@ -17,7 +17,7 @@ This work is associated with the ITCS443 Parallel and Distributed Systems subjec
 
 2. Next, continue typing the following command to specify the `<arraySizeToSort>` and `<number of threads>` respectively.  
 - **Example 1:** If the `<number of threads> = 1`, then the program will automatically run sequential rank sort.   
-- **Example 2:** Otherwise, if `<number of threads> > 1`, it will ask for the ```threshold``` that will call the sequential rank sort to carry on the process when the chunk size is less than the threshold (or by default is set to 0)   
+- **Example 2:** Otherwise, if `<number of threads> > 1`, it will ask for the ```threshold``` that will divide the data chunk size with the given threshold and will call the sequential rank sort to carry on the process when the chunk size is less than the threshold. For an example, if the threshold is 1000, the program will divide the chunk size into 1000 for each thread. ( or if in case that the threshold is 0, the program will divide the chunk size with using a default method )
 
 **Example 1:** The example is when the user input **10000 random integer numbers and 1 threads sequentially.**
 ```shell
