@@ -16,13 +16,13 @@
 #include <sys/time.h>
 struct timeval stop, start;
 
-void sequentialRankSort(struct timeval timer, int *arr, int *sorted, int arraySize)
+void sequentialRankSort(struct timeval timer, int *arr, int *sorted, int arraySize, int i, int j)
 {
     gettimeofday(&start, NULL);
-    for (int i = 0; i < arraySize; i++)
+    for (i = 0; i < arraySize; i++)
     {
         int x = 0;
-        for (int j = 0; j < arraySize; j++)
+        for (j = 0; j < arraySize; j++)
         {
             if (arr[j] < arr[i] || (arr[j] == arr[i] && j < i))
                 x++;
@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
     if (numThreads == 1)
     {
         struct timeval timer;
-        sequentialRankSort(timer, arr, sorted, arraySize);
+        sequentialRankSort(timer, arr, sorted, arraySize, i, j);
         for (i = 0; i < arraySize; i++)
         {
             printf("unsorted : %d, sorted : %d\n", arr[i], sorted[i]);
