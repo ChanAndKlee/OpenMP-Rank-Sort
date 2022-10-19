@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     printf("> It's loading, pls wait\n");
 
     // Sequential rank sort
-    if (numThreads == 1)
+    if (numThreads == 0)
     {
         struct timeval timer;
         sequentialRankSort(timer, arr, sorted, arraySize, i, j);
