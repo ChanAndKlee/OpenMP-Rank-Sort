@@ -9,6 +9,10 @@ This work is associated with the ITCS443 Parallel and Distributed Systems subjec
 ## How to run the code
 **Prerequisite:** The program is required to run on the **Windows Subsystem For Linux (WSL)**
 
+**Detail:**
+- There are 2 main versions: `main.c` and `optimized.c` (The given example on the README file will be `main.c`, but how to run is exactly the same, just change the naming file.)
+- When the sample size is become larger, even it has more threads, but the running time takes to long to complete the work, therefore `optimized.c` will have a little code modification to let it run the inner loop parallely.
+
 1. First, open the file name `main.c`, and run on the terminal by typing the following command to execute the file, then if you see the main.exe, it's a good sign to do the step 2
 
 ```shell
@@ -16,10 +20,10 @@ This work is associated with the ITCS443 Parallel and Distributed Systems subjec
 ```
 
 2. Next, continue typing the following command to specify the `<arraySizeToSort>` and `<number of threads>` respectively.  
-- **Example 1:** If the `<number of threads> = 1`, then the program will automatically run sequential rank sort.   
-- **Example 2:** Otherwise, if `<number of threads> > 1`, it will ask for the ```threshold``` that will divide the data chunk size with the given threshold and will call the sequential rank sort to carry on the process when the chunk size is less than the threshold. For an example, if the threshold is 1000, the program will divide the chunk size into 1000 for each thread. ( or if in case that the threshold is 0, the program will divide the chunk size with using a default method )
+- **Example 1:** If the `<number of threads> = 0`, then the program will automatically run the sequential rank sort. ( 0 is just an option to run sequentially)   
+- **Example 2:** Otherwise, if `<number of threads> >= 1`, it will ask for the ```threshold``` that will divide the data chunk size with the given threshold. For an example, if the threshold is 1000, the program will divide the chunk size into 1000 for each thread. ( or if in case that the threshold is 0, the program will divide the chunk size with using a default method )
 
-**Example 1:** The example is when the user input **10000 random integer numbers and 1 threads sequentially.**
+**Example 1:** The example is when the user input **10000 random integer numbers sequentially.**
 ```shell
 > ./main 10000 1
 ```
@@ -35,12 +39,12 @@ This work is associated with the ITCS443 Parallel and Distributed Systems subjec
 
 ## Example of the output
 
-**Example 1:** The example is when the user input **10000 random integer numbers and 1 threads sequentially.**
+**Example 1:** The example is when the user input **10000 random integer numbers sequentially.**
 ```
 unsorted : 292, sorted : 9997
 unsorted : 9307, sorted : 9999
 unsorted : 9430, sorted : 9999
->> Time used in sequential rank sort : 0.460578 seconds
+>> Time used in sequential rank sort : 0.392559 seconds
 ```
 
 **Example 2:** The example is when the user input **10000 random integer numbers and 8 threads parallely with the threshold equal to 0**
@@ -48,6 +52,6 @@ unsorted : 9430, sorted : 9999
 unsorted : 292, sorted : 9997
 unsorted : 9307, sorted : 9999
 unsorted : 9430, sorted : 9999
->> Time used in parallel rank sort using OpenMP : 0.077603 seconds
+>> Time used in parallel rank sort using OpenMP : 0.073546 seconds
 ```
 
