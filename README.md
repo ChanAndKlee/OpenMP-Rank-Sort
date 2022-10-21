@@ -25,7 +25,7 @@ This work is associated with the ITCS443 Parallel and Distributed Systems subjec
 
 **Example 1:** The example is when the user input **10000 random integer numbers sequentially.**
 ```shell
-> ./main 10000 1
+> ./main 10000 0
 ```
 
 **Example 2:** The example is when the user input **10000 random integer numbers and 8 threads parallely with the threshold equal to 0**
